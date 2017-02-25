@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+vmas {
+	font-size: 116%;
+	font-weight: bolder;
+	color: green;
+}
+
+
+
+
+/* change the color of the drop down menu text */
+a {
+  line-height: inherit;
+  color: #008000;
+  text-decoration: none;
+  cursor: pointer; }
+  a:hover, a:focus {
+    color: #006e00; }
+  a img {
+    border: 0; }
+
+/* change the color of the downward triangle on dropdown menu */
+.dropdown.menu > li.is-dropdown-submenu-parent > a::after {
+  display: block;
+  width: 0;
+  height: 0;
+  border: inset 6px;
+  content: '';
+  border-bottom-width: 0;
+  border-top-style: solid;
+  border-color: #ffff80 transparent transparent;
+  right: 5px;
+  margin-top: -3px; }
+
+/* change spacing between buttons */
+.button {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.10rem 1rem 0;
+  padding: 0.85em 1em;
+  -webkit-appearance: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  background-color: #008000;
+  color: #fefefe; }
+
+/* change background color of menu bar */
+   .top-bar,
+  .top-bar ul {
+    background-color: #f4f4f4; }
+ 
+ /* change BREADCRUMBS */
+ .breadcrumbs {
+  margin: 0 0 1rem 0;
+  list-style: none; }
+  .breadcrumbs::before, .breadcrumbs::after {
+    display: table;
+    content: ' '; }
+  .breadcrumbs::after {
+    clear: both; }
+  .breadcrumbs li {
+    float: left;
+    font-size: 0.6875rem;
+    color: #0a0a0a;
+    cursor: default;
+    text-transform: uppercase; }
+    .breadcrumbs li:not(:last-child)::after {
+      position: relative;
+      top: 1px;
+      margin: 0 0.75rem;
+      opacity: 1;
+      content: "/";
+      color: #cacaca; }
+  .breadcrumbs a {
+    color: #008000; }
+    .breadcrumbs a:hover {
+      text-decoration: underline; }
+  .breadcrumbs .disabled {
+    color: #cacaca;
+    cursor: not-allowed; }
+ 
+
+
+
+
+    

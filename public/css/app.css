@@ -1,13 +1,63 @@
 @charset "UTF-8";
 
+/* Primary color
+color: #008000;
+/* Secondary color
+color: #000080;
+/* Alert color 
+color: #fdcf79;
+/* Success Color 
+color: #07eb01;
+/* Warning color 
+color: #fe8194;
+/* Body Font Color 
+color: #000000;
+/* Header Font Color 
+color: #be7dff;
+*/
+
+
+
+
+
+/*
+ * ****** *
+ * My CSS *
+ * ****** *
+ */
+ 
+ 
 vmas {
 	font-size: 116%;
 	font-weight: bolder;
 	color: green;
 }
 
+footer {
+	font-size:.75em;
+	font-style:italic;
+	color: #008000;
+	/*color: #005500; */
+	text-align:center;
+}
+
+/*
+ * ************************* *
+ * Modified Foundatation CSS *
+ * ************************* *
+ */
 
 
+/* change the color of the line */
+hr {
+  clear: both;
+  max-width: 62.5rem;
+  height: 0;
+  margin: 1.25rem auto;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid #008000;
+  border-left: 0; }
 
 /* change the color of the drop down menu text */
 a {

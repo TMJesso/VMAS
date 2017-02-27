@@ -55,8 +55,26 @@ class Subsubmenu extends DatabaseObject {
 		$result = self::find_by_sql($sql);
 		return array_shift($result);
 	}
+
+	public static function find_subsubmenu_by_url($url) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE url = '{$url}'";
+		$results = self::find_by_sql($sql);
+		return array_shift($results);
+	}
+	
+	public static function find_subsubmenu_by_menu_id($submenu_id) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE submenu_id = {$submenu_id}";
+		return self::find_by_sql($sql);
+	}
 	
 	public static function load_subsubmenu() {
+		$new_obj = new self;
+		$new_obj->add_subsubmenu();
+	}
+	
+	private static function add_subsubmenu() {
 		global $db, $code;
 		$obj = new self;
 		$num = $obj->count_subsubmenu();
@@ -66,68 +84,120 @@ class Subsubmenu extends DatabaseObject {
 			$obj = new self;
 			$obj->submenu_id = 2; $obj->link_text = "Add / Edit Vehicle"; 		$obj->find_text = "AddCar"; 		$obj->url = "addedit_vehicle.php"; 		$obj->position = 0; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
 			
 			$obj = new self;
 			$obj->submenu_id = 2; $obj->link_text = "Add Gas"; 					$obj->find_text = "AddGas"; 		$obj->url = "add_gas.php"; 				$obj->position = 1; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 2; $obj->link_text = "Oil Change"; 				$obj->find_text = "OilChange"; 		$obj->url = "oil_change.php"; 			$obj->position = 2; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 2; $obj->link_text = "Repairs"; 					$obj->find_text = "Repairs"; 		$obj->url = "repairs.php"; 				$obj->position = 3; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 3; $obj->link_text = "Miscellaneous"; 			$obj->find_text = "Miscellaneous"; 	$obj->url = "misc.php"; 				$obj->position = 0; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 6; $obj->link_text = "Add / Edit Contacts"; 		$obj->find_text = "AddContacts"; 	$obj->url = "addedit_contact.php"; 		$obj->position = 0; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 7; $obj->link_text = "Backup Database"; 			$obj->find_text = "BackData"; 		$obj->url = "backup_data.php"; 			$obj->position = 0; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 7; $obj->link_text = "Add / Edit Users"; 		$obj->find_text = "AddUsers"; 		$obj->url = "addedit_users.php"; 		$obj->position = 1; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 7; $obj->link_text = "Reset User Passcode"; 		$obj->find_text = "ResetPasscode"; 	$obj->url = "Reset_passcode"; 			$obj->position = 1; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 5; $obj->link_text = "Add / Edit Event"; 		$obj->find_text = "AddEvent"; 		$obj->url = "addedit_event.php"; 		$obj->position = 0; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 5; $obj->link_text = "Show Scheduled Events"; 	$obj->find_text = "ShowEvent";		$obj->url = "show_event.php";			$obj->position = 1; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 4; $obj->link_text = "Vendor Report"; 			$obj->find_text = "VendReport";		$obj->url = "vend_report.php"; 			$obj->position = 1; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
-			$save[$obj->link_text] = $obj->save();
+// 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			$obj = new self;
 			$obj->submenu_id = 4; $obj->link_text = "Add / Edit Vendors"; 		$obj->find_text = "AddVendors"; 	$obj->url = "addedit_vendors.php"; 		$obj->position = 0; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
+// 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
+// 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";
+// 			$obj->save();
+// 			unset($obj, $submenu);
 			unset($obj);
-			
+				
 			foreach ($save as $item => $value) {
 				if (!$value) {
 					$code[strtolower($item)][($value) ? 1 : 0] = (($value) ? "{$item} was successfully Saved" : "There was an error saving {$item} submenu item");

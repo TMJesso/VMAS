@@ -43,7 +43,7 @@ class User EXTENDS DatabaseObject {
 	
 	/**
 	 * 
-	 * @var integer size 1
+	 * @var tinyint size 1
 	 * @default 0
 	 */
 	public $master = 0;
@@ -101,6 +101,20 @@ class User EXTENDS DatabaseObject {
 	public $clearance = 9;
 	
 	public $reset = 0;
+	
+	/** 
+	 * true or false
+	 * 
+	 * @var tinyint size 1
+	 */
+	public $confirm = 0;
+	
+	/**
+	 * When was this user confirmed
+	 * 
+	 * @var datetime
+	 */
+	public $confirmed;
 	
 	function __construct() {
 		global $db;

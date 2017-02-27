@@ -12,49 +12,85 @@
  */
 
 class Session {
+	
 	private $logged_in = false;
+	
 	public $user_id;
+	
 	private $name;
 	
-	/** Session security
-	 * This sets a security code for which each user is 
-	 * 
-	 * assigned a security code
-	 * 
-	 * 0 = admin
-	 * 
-	 * 1 = teacher
-	 * 
-	 * 2 = student
-	 * 
-	 * 3 = judges
-	 * 
-	 * 9 = general public (default)
-	 * 
-	 * @var int size 1
+	/**
+	 * 0 - Tier 0 (Sun)
+	 *
+	 * 1 - Tier 1 (Stellar)
+	 *
+	 * 2 - Tier 2 (Orbital)
+	 *
+	 * 3 - Tier 3 (Heavens)
+	 *
+	 * 4 - Tier 4 (Atmosphereic)
+	 *
+	 * 5 - Tier 5 (Stratis)
+	 *
+	 * 6 - Tier 6 (Accumulas)
+	 *
+	 * 7 - Tier 7 (National)
+	 *
+	 * 8 - Tier 8 (Regional)
+	 *
+	 * 9 - Tier 9 (Station) - (LOWEST SECURITY CLEARANCE)
+	 *
+	 * @var integer size 1
+	 * @default 9
 	 */
-	private $security = 99;
+	private $security = 9;
 	
-	/** Session clearance
+	/**
+	 * used to set clearance level access to menus and
 	 * 
-	 * This is the clearance level of the user 
+	 * certain functionality within the system
 	 * 
-	 * and will affect how the menus are displayed to the user
-	 * 
-	 * especially for the admin user. The users, like teacher and student
-	 * 
-	 * won't be affected that much
-	 * 
-	 * @var int size 1
+	 * 0 - Owner
+	 *
+	 * 1 - Board
+	 *
+	 * 2 - President
+	 *
+	 * 3 - Finanace
+	 *
+	 * 4 - Marketing
+	 *
+	 * 5 - Human Resources
+	 *
+	 * 6 - Accounting
+	 *
+	 * 7 - IT
+	 *
+	 * 8 - Department
+	 *
+	 * 9 - Individual
+	 *
+	 * @var integer size 1
+	 * @default 9
 	 */
-	private $clearance = 99;
+	private $clearance = 9;
 	
-	private $admin_master = false;
+	private $admin = false;
 	
 	public $message;
 	
 	public $errors;
 	
+	/**
+	 * Session start
+	 * 
+	 * check_messages()
+	 * 
+	 * check_errors()
+	 * 
+	 * check_login()
+	 * 
+	 */
 	function __construct() {
 		session_start();
 		$this->check_message();
@@ -75,15 +111,14 @@ class Session {
 	 * 
 	 * @return boolean
 	 */
-	public function is_logged_in($sheblon=9) {
-		if (isset($this->security)) {
-			if ($sheblon != $this->security) {
-				if ($this->logged_in) {
-					$this->message("You have been logged out!");
-				}
-				$this->logout();
-			}
-		}
+	public function is_logged_in() {
+// 		if (isset($this->user_id)) {
+// 				if ($this->logged_in) {
+// 					$this->message("You have been logged out!");
+// 				}
+// 				$this->logout();
+// 		}
+		get_breadcrumb();
 		return $this->logged_in;
 	}
 	
@@ -93,25 +128,17 @@ class Session {
 	
 	/** Session find_clearance method
 	 * 
-	 * Since the clearance value is private to session
+	 * Allows access to the session clearance variable
 	 * 
-	 * it can only be accessed by this method.
+	 * returns values between 0 and 9
 	 * 
-	 * This method gives access to retrieve its value of the user 
-	 * 
-	 * and will affect how the menus are displayed to the user
-	 * 
-	 * especially for the admin user. The users, like teacher, student 
-	 * 
-	 * and judge won't be affected that much
-	 * 
-	 * @return integer
+	 * @return integer size 1
 	 */
 	public function find_clearance() {
 		if (isset($this->clearance)) {
 			return $this->clearance;
 		} else {
-			return 99;
+			return 9;
 		}
 	}
 	
@@ -132,23 +159,48 @@ class Session {
 	}
 	
 	public function is_master() {
-		return $this->admin_master;
+		return $this->admin;
 	}
 	
-	
-	public function get_clearance($sheblon) {
+	/**
+	 * This is used to get the clearance string value for users logged in
+	 * 
+	 * it's primary use is for adding to the user_log table;
+	 * 
+	 * @param integer $sheblon size 1
+	 * @return string
+	 */
+	public function convert_clerance_to_string($sheblon) {
 		switch ($sheblon) {
 			case 0:
-				$menu = "Admin";
+				$menu = "Owner";
 				break;
 			case 1:
-				$menu = "Teacher";
+				$menu = "Board";
 				break;
 			case 2:
-				$menu = "Student";
+				$menu = "President";
 				break;
 			case 3:
-				$menu = "Judge";
+				$menu = "Finance";
+				break;
+			case 4:
+				$menu = "Marketing";
+				break;
+			case 5:
+				$menu = "Human Resources";
+				break;
+			case 6:
+				$menu = "Accounting";
+				break;
+			case 7:
+				$menu = "IT";
+				break;
+			case 8:
+				$menu = "Department";
+				break;
+			case 9:
+				$menu = "Individual";
 				break;
 			default :
 				$menu = "Public";
@@ -157,23 +209,23 @@ class Session {
 		return $menu;
 	}
 	
-	public function login($user, $sheblon) {
+	public function login($user) {
 		// database should find user based on username/password
 		if ($user) {
 			$this->user_id = $_SESSION['user_id'] = (int)$user->id;
 			$this->name = $_SESSION['name'] = $this->fullname($user);
-			$this->security = $_SESSION['security'] = $sheblon;
+			$this->security = $_SESSION['security'] = (int) $user->security;
 			$this->clearance = $_SESSION['clearance'] = (int)$user->clearance;
 			if(isset($user->master)) {
-				$_SESSION['admin_master'] = $user->master;
-				$this->admin_master = ($_SESSION['admin_master']  == 1) ? true : false;
+				$_SESSION['admin'] = $user->master;
+				$this->admin = ($_SESSION['admin']  == 1) ? true : false;
 			} else {
-				$this->admin_master = $_SESSION['admin_master'] = false;
+				$this->admin = $_SESSION['admin'] = false;
 			}
-			$activity  = ($this->admin_master) ? "" : "User ID: " . $this->user_id . " ";
-			$activity .= ($this->admin_master) ? "" : $this->get_clearance($sheblon) . " ";
-			$activity  .= ($this->admin_master) ? "Admin Master Login" : "Non-Master Login";
-			Activity::user_log($user->id, $activity, $this->get_clearance($sheblon));
+			$activity  = ($this->admin) ? "" : "User ID: " . $this->user_id . " ";
+			$activity .= ($this->admin) ? "" : $this->convert_clerance_to_string($sheblon) . " ";
+			$activity  .= ($this->admin) ? "Admin Master Login" : "User Login";
+			Activity::user_log($user->id, $activity, $this->convert_clerance_to_string($sheblon));
 			$this->logged_in = true;
 		} else {
 			$this->logged_in = false;
@@ -193,24 +245,22 @@ class Session {
 	
 	public function logout() {
 		if (isset($this->user_id)) {
-			$activity = ($this->admin_master) ? "" : "User ID: " . $this->user_id . " ";
-			$activity .= ($this->admin_master) ? "Admin Master" : $this->get_clearance($this->security);
+			$activity = ($this->admin) ? "" : "User ID: " . $this->user_id . " ";
+			$activity .= ($this->admin) ? "Admin Master" : $this->convert_clerance_to_string($this->security);
 			$activity .= " Logged Out";
-			Activity::user_log($this->user_id, $activity, $this->get_clearance($this->security));
+			Activity::user_log($this->user_id, $activity, $this->convert_clerance_to_string($this->security));
 		}
 		unset($_SESSION['user_id']);
 		unset($this->user_id);
 		unset($this->name);
 		unset($this->security);
 		unset($this->clearance);
-		//unset($this->data);
 		unset($this->logged_in);
-		unset($_SESSION['admin_master']);
-		$this->admin_master = false;
+		unset($_SESSION['admin']);
+		$this->admin = false;
 		$this->logged_in = false;
-		//$this->security = 9;
 		$this->clearance = 9;
-		//$this->data = array();
+		$this->security = 9;
 	}
 	
 	public function message($msg="") {
@@ -233,6 +283,13 @@ class Session {
 		}
 	}
 	
+	/**
+	 * if user data is in the $_SESSION then set the class variables
+	 * 
+	 * 		Set the user id, name, security, clearance, and admin values
+	 * 
+	 * 		
+	 */
 	private function check_login() {
 		if (isset($_SESSION['user_id'])) {
 			$this->user_id = $_SESSION['user_id'];
@@ -245,11 +302,8 @@ class Session {
 			if (isset($_SESSION['clearance'])){
 				$this->clearance = $_SESSION['clearance'];
 			}
-			if (isset($_SESSION['data'])) {
-				$this->data = $_SESSION['data'];
-			}
-			if (isset($_SESSION['admin_master'])) {
-				$this->admin_master = ($_SESSION['admin_master'] == 1) ? true : false;
+			if (isset($_SESSION['admin'])) {
+				$this->admin = ($_SESSION['admin'] == 1) ? true : false;
 			}
 			
 			$this->logged_in = true;
@@ -258,12 +312,10 @@ class Session {
 			unset($this->name);
 			unset($this->security);
 			unset($this->clearance);
-			unset($this->data);
 			$this->security = 9;
 			$this->clearance = 9;
 			$this->name = "";
-			$this->data = array();
-			$this->admin_master = false;
+			$this->admin = false;
 			$this->logged_in = false;
 		}
 	}
@@ -306,12 +358,10 @@ class Session {
 		return $output;
 	}
 	
-	
 }
 
 $session = new Session();
 $message = $session->message();
 $errors = $session->errors();
-
 
 ?>

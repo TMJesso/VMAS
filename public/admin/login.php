@@ -1,14 +1,31 @@
 <?php
-require_once  "/wamp/www/vmas/includes/path.php";
+require_once  "../../includes/path.php";
 
+
+if (isset($_POST["submit"])) {
+	$username = $db->prevent_injection(trim($_POST["username"]));
+	$password = $db->prevent_injection(trim($_POST["passcode"]));
+	
+	$user = User::get_user_by_username($username);
+	$founduser = attempt_login($username, $password, $user);
+	
+	if ($founduser) {
+		$loggedin = $session->login($founduser);
+		if (!$founduser->confirm && $loggedin) {
+			$founduser->confirm = 1;
+			$founduser->save();
+		}
+		//TODO make it redirect to change passcode page
+		redirect_to('index.php');
+	} else {
+		$errors['Login'] = "Username and/or password combination incorrect... please try again!";
+		$session->errors($errors);
+		redirect_to("login.php");
+	}
+}
 ?>
 
 <?php include_layout_template('vmas_header.php'); ?>
-<div class="row">
-	<div class="large-12 medium-12 small-12 columns">
-		Menu
-	</div>
-</div>
 <div class="row">
 	<div class="large-3 medium-3 small-2 columns">
 		&nbsp;

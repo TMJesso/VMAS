@@ -78,13 +78,16 @@ class DbConnect extends DatabaseObject {
 					Menu::load_menu();
 				}
 				if ($items[$x] == "submenu") {
-						Submenu::load_submenu(); 
+					Submenu::load_submenu(); 
 				}
 				if ($items[$x] == "subsubmenu") {
-						Subsubmenu::load_subsubmenu();
+					Subsubmenu::load_subsubmenu();
 				}
 				if ($items[$x] == "master") {
-						User::generate_master_admin();
+					User::generate_master_admin();
+				}
+				if ($items[$x] == "vehicle") {
+					Vehicle::load_car();
 				}
 			}
 		}
@@ -96,6 +99,7 @@ class DbConnect extends DatabaseObject {
 		$this->create_user($show);
 		$this->create_merchant($show);
 		$this->create_msg($show);
+		$this->create_dealer($show);
 		$this->create_vehicle($show);
 		$this->create_record($show);
 		$this->create_menu($show);
@@ -118,6 +122,8 @@ class DbConnect extends DatabaseObject {
 		$sql .= 'security int(1) NOT NULL, ';
 		$sql .= 'clearance int(1) NOT NULL, ';
 		$sql .= 'reset int(1) NOT NULL, ';
+		$sql .= 'confirm int(1) NOT NULL, ';
+		$sql .= 'confirmed datetime NULL, ';
 		$sql .= 'PRIMARY KEY (id), ';
 		$sql .= 'UNIQUE KEY email (email), ';
 		$sql .= 'UNIQUE KEY username (username))';
@@ -181,10 +187,31 @@ class DbConnect extends DatabaseObject {
 		$sql .= 'state VARCHAR(2) NOT NULL, ';
 		$sql .= 'purchased DATETIME NOT NULL, ';
 		$sql .= 'cost FLOAT(10,2) NOT NULL, ';
-		$sql .= 'dealer VARCHAR(45) NOT NULL, ';
+		$sql .= 'dealer_id int(11) NOT NULL, ';
 		$sql .= 'start_miles int(7) NOT NULL, ';
 		$sql .= 'PRIMARY KEY (id), ';
-		$sql .= 'FOREIGN KEY user_id (user_id) REFERENCES user (id))';
+		$sql .= 'UNIQUE KEY (vin), ';
+		$sql .= 'FOREIGN KEY user_id (user_id) REFERENCES user (id), ';
+		$sql .= 'FOREIGN KEY dealer_id (dealer_id) REFERENCES dealer (id))';
+		if ($this->query($sql)) {
+			if ($show) {
+				echo "<span style=\"color: green;\">" . substr($sql, 0, strpos($sql, "(")) . " <strong>EXECUTED</strong>!</span><br/>";
+			}
+		}
+	}
+	
+	private function create_dealer($show) {
+		$sql  = 'CREATE TABLE IF NOT EXISTS dealer ( ';
+		$sql .= 'id int(11) NOT NULL AUTO_INCREMENT, ';
+		$sql .= 'vehicle_id int(11) NOT NULL, ';
+		$sql .= 'name varchar(45) NOT NULL, ';
+		$sql .= 'address varchar(35) NOT NULL, ';
+		$sql .= 'city varchar(25) NOT NULL, ';
+		$sql .= 'state varchar(2) NOT NULL, ';
+		$sql .= 'zip varchar(10) NOT NULL, ';
+		$sql .= 'phone varchar(10) NOT NULL, ';
+		$sql .= 'salesman varchar(45) NOT NULL, ';
+		$sql .= 'PRIMARY KEY (id)) ';
 		if ($this->query($sql)) {
 			if ($show) {
 				echo "<span style=\"color: green;\">" . substr($sql, 0, strpos($sql, "(")) . " <strong>EXECUTED</strong>!</span><br/>";

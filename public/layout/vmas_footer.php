@@ -4,19 +4,12 @@
 		<br/>
 		<br/>
 		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
 		<div class="row">
 			<div class="large-1 medium-1 small-1 columns">
 				&nbsp;
 			</div>
 			<div class="large-10 medium-10 small-10 text-center columns">
-				
+				<div style="line-color: #008000;"><hr/></div>
 					<footer title="Copyright &#169; <?php echo strftime("%Y", time()); ?> All Rights Reserved">
 						<p>
 							Copyright &copy; <?php echo strftime("%Y", time()); ?> VMAS All Rights Reserved
@@ -33,7 +26,6 @@
 			</div>
 		</div>
 		<!-- JavaScript -->
-<!--	<script src="<?php //echo JS_PATH . "foundation.js"?>"></script> -->
 		<script src="<?php echo JS_PATH . "vendor/jquery.js"; ?>"></script>
 		<script src="<?php echo JS_PATH . "vendor/what-input.js"?>"></script>
 		<script src="<?php echo JS_PATH . "vendor/foundation.js"?>"></script>

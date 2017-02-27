@@ -131,7 +131,7 @@ function include_layout_template($template="") {
 	//
 	//
 
-	include(LIB_LAYOUT.DS.$template);
+	include(LIB_LAYOUT.$template);
 }
 
 function log_action($action, $message="") {
@@ -153,7 +153,7 @@ function datetime_to_text($datetime="") {
 	return strftime("%B %d, %Y at %I:%M %p", $unixdatetime);
 }
 
-function breadcrumb($subject_array, $page_array, $subject, $pages, $visible) {
+function oldbreadcrumb($subject_array, $page_array, $subject, $pages, $visible) {
 	global $breadcum;
 	$menus = $subject->find_all_subjects($visible);
 	if (isset($_GET["m"]) ) {
@@ -177,6 +177,140 @@ function breadcrumb($subject_array, $page_array, $subject, $pages, $visible) {
 	endforeach;
 	$breadcrum .= " </ul>";
 	return $breadcrum;
+}
+
+function get_breadcrumb() {
+	$filename = $_SERVER["SCRIPT_NAME"];
+	$menu_id = $submenu_id = $subsubmenu_id = null;
+	$new_name = true;
+	while ($new_name ) {
+		if ((strpos($filename, "/") > -1)) {
+		} else {
+			$new_name = false;
+			continue;
+		}
+		$filename = substr($filename, (strpos($filename, "/"))+1);
+	}
+	$menu = Menu::find_menu_by_url($filename);
+	if (!$menu) {
+	$submenu = Submenu::find_submenu_by_url($filename);
+	if (!$submenu) {
+		$subsubmenu = Subsubmenu::find_subsubmenu_by_url($filename);
+		$submenu_id = null;
+		if (!$subsubmenu) {
+			$subsubmenu = null;
+		} else {
+			$submenu = Submenu::find_submenu_by_id($subsubmenu->submenu_id);
+			$menu = Menu::find_menu_by_id($submenu->menu_id);
+			$subsubmenu_id = $subsubmenu->id;
+			$submenu_id = $submenu->id;
+			$menu_id = $menu->id;
+		}
+	} else {
+		$menu = Menu::find_menu_by_id($submenu->menu_id);
+		$submenu_id = $submenu->id;
+		$menu_id = $menu->id;
+	}
+	} else {
+		$menu_id = $menu->id;
+		$submenu_id = null;
+		$subsubmenu_id = null;
+	}
+	breadcrumbs($menu_id, $submenu_id, $subsubmenu_id, $filename);
+}
+
+function breadcrumbs($menu_id=null, $submenu_id=null, $subsubmenu_id=null, $filename="") {
+	global $breadcrumbs, $db, $header;
+	
+
+	
+	//$header = "Menu: {$menu_id} Submenu: {$submenu_id} Subsubmenu: {$subsubmenu_id} File: " . $filename;
+	//return;
+	$safe_menu_id = $db->prevent_injection($menu_id);
+	$safe_submenu_id = $db->prevent_injection($submenu_id);
+	$safe_subsubmenu_id = $db->prevent_injection($subsubmenu_id);
+	$breadcrumbs = "<ul class=\"breadcrumbs\">";
+	if (!is_null($menu_id)) {
+		$menu = Menu::find_menu_by_id($safe_menu_id);
+		if (is_null($submenu_id)) {
+			$breadcrumbs .= "<li class=\"disabled\">{$menu->link_text}</li>";
+			$header = $menu->link_text;
+		} else {
+			$breadcrumbs .= "<li><a href=\"{$menu->url}\">{$menu->link_text}</a></li>";
+		}
+		if (!is_null($submenu_id)) {
+			$submenu = Submenu::find_submenu_by_id($safe_submenu_id);
+			if (is_null($subsubmenu_id)) {
+				$breadcrumbs .= "<li class=\"disabled\">{$submenu->link_text}</li>";
+				$header = $submenu->link_text;
+			} else {
+				$breadcrumbs .= "<li><a href=\"{$submenu->url}\">{$submenu->link_text}</a></li>";
+			}
+			if (!is_null($subsubmenu_id)) {
+				$subsubmenu = Subsubmenu::find_subsubmenu_by_id($safe_subsubmenu_id);
+				$breadcrumbs .= "<li class=\"disabled\">{$subsubmenu->link_text}</li>";
+				$header = $subsubmenu->link_text;
+			}
+		}
+	} else {
+		$breadcrumbs .= "";
+	}
+	$breadcrumbs .= "</ul>";
+}
+
+function navigation() {
+	global $session;
+	$user = User::get_user_by_id($session->user_id);
+	$menus = Menu::find_menu_by_user_type($user->user_type);
+	$admin = $session->is_master();
+	$output = "<div class=\"top-bar\" data-responsive-toggle=\"main-menu\" data-hide-for=\"large\">";
+	$output .= "<button class=\"menu-icon\" type=\"button\" data-toggle></button>";
+	$output .= "<div class=\"title-bar-title\">&nbsp;&nbsp;Menu</div>";
+	$output .= "</div>";
+	$output .= "<div class=\"top-bar\" id=\"main-menu\">";
+	foreach ($menus as $menu) {
+		$submenus =  Submenu::find_submenu_by_menu_id($menu->id);
+		$output .= "<div class=\"top-bar-left\">";
+		$output .= "<ul class=\"dropdown menu\" data-dropdown-menu>";
+		$output .= "<li class=\"menu-text\" style=\"font-size: .83em;\"><span style=\"font-size: 175%; color: #004000;\">V M A S</span> : {$menu->link_text}</li>";
+		$output .= "</ul></div>";
+		$output .= "<div class=\"top-bar-right\">";
+		$output .= "<ul class=\"menu\" data-responsive-menu=\"drilldown medium-dropdown\">";
+		$output .= "<li class=\"has-submenu\">";
+		foreach($submenus as $drop_menu) {
+			$subsubmenu = Subsubmenu::get_subsubmenu($drop_menu->id, $user->clearance);
+			if ($drop_menu->admin==0 || ($admin)) {
+				if ($session->get_security() == 9) {
+					$output .= "<li><a href=\"{$drop_menu->url}\" style=\"font-size: .83em;\" class=\"button\">{$drop_menu->link_text}</a>";
+					if ($subsubmenu) {
+						$output .= "<ul class=\"submenu menu vertical\" data-submenu>";
+						foreach ($subsubmenu as $nextmenu) {
+							if ($nextmenu->admin==0 || ($admin)) {
+								$output .= "<li><a href=\"{$nextmenu->url}\" style=\"font-size: .95em;\">{$nextmenu->link_text}</a></li>";
+							}
+						}
+						$output .= "</ul>";
+					}
+					$output .= "</li>";
+				} else {
+					$output .= "<li><a href=\"{$drop_menu->url}\" style=\"font-size: .83em;\" class=\"button\">{$drop_menu->link_text}</a>";
+					if ($subsubmenu) {
+						$output .= "<ul class=\"submenu menu vertical\" data-submenu>";
+						foreach ($subsubmenu as $nextmenu) {
+							if ($nextmenu->admin==0 || ($admin)) {
+								$output .= "<li style=\"font-size: .95em;\"><a href=\"{$nextmenu->url}\">{$nextmenu->link_text}</a></li>";
+							}
+						}
+						$output .= "</ul>";
+					}
+					$output .= "</li>";
+				}
+			}
+		}
+		$output .= "</ul></div>";
+	}
+	$output .= "</div>";
+	return $output;
 }
 
 /** navigation takes 2 arguments

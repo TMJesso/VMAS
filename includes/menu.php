@@ -35,7 +35,26 @@ class Menu extends DatabaseObject {
 
 	}
 	
+	public static function find_menu_by_id($id) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE id = {$id}";
+		$results = self::find_by_sql($sql);
+		return array_shift($results);
+	}
+	
+	public static function find_menu_by_url($url) {
+		$sql  = "SELECT * FROM " . self::$table_name;
+		$sql .= " WHERE url = '{$url}'";
+		$results = self::find_by_sql($sql);
+		return array_shift($results);
+	}
+	
 	public static function load_menu() {
+		$new_obj = new self;
+		$new_obj->add_menu();
+	}
+	
+	private function add_menu() {
 		global $db;
 		$obj = new self;
 		$num = $obj->count_menu();
@@ -45,7 +64,7 @@ class Menu extends DatabaseObject {
 		if ($num == 0 || !$num) {
 			$obj->link_text = 'Admin';
 			$obj->find_text = 'Admin';
-			$obj->url = 'index.php';
+			$obj->url = 'master_index.php';
 			$obj->visible = 1;
 			$obj->user_type = 0;
 			if ($value = $obj->save()) {
@@ -58,7 +77,7 @@ class Menu extends DatabaseObject {
 			$obj = new self;
 			$obj->link_text = 'Public';
 			$obj->find_text = 'Public';
-			$obj->url = 'index.php';
+			$obj->url = 'public_index.php';
 			$obj->visible = 1;
 			$obj->user_type = 9;
 			if ($value = $obj->save()) {

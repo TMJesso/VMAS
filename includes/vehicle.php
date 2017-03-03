@@ -73,7 +73,7 @@ class Vehicle extends DatabaseObject {
 	private function add_car() {
 		global $db;
 		$obj = new self;
-		$num = $obj->count_menu();
+		$num = $obj->count_car();
 		unset($obj);
 		$code = "";
 		$obj = new self;
@@ -92,7 +92,7 @@ class Vehicle extends DatabaseObject {
 		unset($code);
 	}
 	
-	private function count_menu() {
+	private function count_car() {
 		global $db;
 		$sql = "SELECT COUNT(*) FROM " . self::$table_name;
 		$result_set = $db->query($sql);

@@ -44,6 +44,7 @@ require_once(LIB_PATH.'/submenu.php');
 require_once(LIB_PATH.'/subsubmenu.php');
 require_once(LIB_PATH.'/log.php');
 require_once(LIB_PATH.'/vehicle.php');
+require_once(LIB_PATH.'/dealer.php');
 // require_once(LIB_PATH.'/pages.php');
 // require_once(LIB_PATH.'/subjects.php');
 // require_once(LIB_PATH.'/photo.php');

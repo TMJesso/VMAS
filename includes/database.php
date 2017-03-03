@@ -204,6 +204,7 @@ class DbConnect extends DatabaseObject {
 		$sql  = 'CREATE TABLE IF NOT EXISTS dealer ( ';
 		$sql .= 'id int(11) NOT NULL AUTO_INCREMENT, ';
 		$sql .= 'vehicle_id int(11) NOT NULL, ';
+		$sql .= 'user_id int(11) NOT NULL, ';
 		$sql .= 'name varchar(45) NOT NULL, ';
 		$sql .= 'address varchar(35) NOT NULL, ';
 		$sql .= 'city varchar(25) NOT NULL, ';
@@ -408,7 +409,7 @@ class DbConnect extends DatabaseObject {
 	}
 	
 	private function drop_all_tables($show) {
-		$tables = array('subsubmenu'=>'drop', 'submenu'=>'drop', 'menu'=>'drop', 'record'=>'drop', 'vehicle'=>'drop', 'mpg'=>'drop', 'merchant'=>'drop', 'contact_info'=>'drop', 'user'=>'drop', 'user_log'=>'nodrop');
+		$tables = array('subsubmenu'=>'drop', 'submenu'=>'drop', 'menu'=>'drop', 'record'=>'drop', 'vehicle'=>'drop', 'dealer'=>'drop', 'mpg'=>'drop', 'merchant'=>'drop', 'contact_info'=>'drop', 'user'=>'drop', 'user_log'=>'nodrop');
 		foreach ($tables as $table => $command) {
 			if ($command == 'drop') {
 				$sql  = strtoupper($command) . " TABLE IF EXISTS " . $table;

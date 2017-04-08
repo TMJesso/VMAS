@@ -1,5 +1,7 @@
 <?php
-require_once  '../../includes/path.php';
+//require_once  '../../includes/path.php';
+
+return;
 if (!$session->is_logged_in()) { redirect_to("login.php"); }
 
 ?>

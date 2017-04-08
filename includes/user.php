@@ -49,7 +49,7 @@ class User EXTENDS DatabaseObject {
 	public $master = 0;
 	
 	/**
-	 * 0 - Tier 0 (Sun)
+	 * 0 - Tier 0 (Sun) - (HIGHEST SECURITY CLEARANCE)
 	 * 
 	 * 1 - Tier 1 (Stellar)
 	 * 
@@ -74,8 +74,11 @@ class User EXTENDS DatabaseObject {
 	 */
 	public $security = 9;
 	
-	/**
-	 * 0 - Owner
+	/** Within the security clearance there are 10 clearance 
+	 * 
+	 * levels that could be used
+	 * 
+	 * 0 - Owner (Highest Clearance Level)
 	 * 
 	 * 1 - Board
 	 * 
@@ -93,13 +96,19 @@ class User EXTENDS DatabaseObject {
 	 * 
 	 * 8 - Department
 	 * 
-	 * 9 - Individual
+	 * 9 - Individual (Lowest Clearance Level)
 	 * 
 	 * @var integer size 1
 	 * @default 9
 	 */
 	public $clearance = 9;
 	
+	/** reset passcode option 
+	 * 
+	 * true or false
+	 * 
+	 * @var tinyint size 1
+	 */
 	public $reset = 0;
 	
 	/** 
@@ -173,7 +182,7 @@ class User EXTENDS DatabaseObject {
 		$obj->fname = "Theral";
 		$obj->lname = "Jessop";
 		$obj->username = "TheraLjEssop";
-		$obj->passcode = password_encrypt("8F2017-farms");
+		$obj->passcode = password_encrypt("8F2017-farms", $obj->username);
 		$obj->email = "Jess_Hort_Farms@mail.com";
 		$obj->master = 1;
 		$obj->user_type = 0;
@@ -194,7 +203,7 @@ class User EXTENDS DatabaseObject {
 		$obj->fname = "Public";
 		$obj->lname = "Access";
 		$obj->username = "PublicAccess";
-		$obj->passcode = password_encrypt("2C2017-access");
+		$obj->passcode = password_encrypt("2C2017-access", $obj->username);
 		$obj->email = "none@host.com";
 		$obj->master = 0;
 		$obj->user_type = 9;

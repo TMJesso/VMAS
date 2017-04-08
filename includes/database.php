@@ -2,7 +2,7 @@
 require_once(LIB_PATH.DS.'config.php');
 require_once(LIB_PATH.DS.'initialize.php');
 class DbConnect extends DatabaseObject {
-	private $my_sql_connect;
+	private $my_db;
 	
 	function __construct() {
 		$this->open_connection();
@@ -10,22 +10,22 @@ class DbConnect extends DatabaseObject {
 	}
 	
 	public function open_connection() {
-		//$this->my_sql_connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-		$this->my_sql_connect = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+		//$this->my_db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+		$this->my_db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 		if (mysqli_connect_errno()) {
 			die ("Database connection failed: " . mysqli_connect_error() . " (" . mysqli_connect_errno() . ")" );
 		}
 	}
 	
 	public function close_connection() {
-		if (isset($this->my_sql_connect)) {
-			mysqli_close($this->my_sql_connect);
-			unset($this->my_sql_connect);
+		if (isset($this->my_db)) {
+			mysqli_close($this->my_db);
+			unset($this->my_db);
 		}
 	}
 	
 	public function query($sql) {
-		$result = mysqli_query( $this->my_sql_connect, $sql);
+		$result = mysqli_query( $this->my_db, $sql);
 		// test if there was a query error
 		// $this->confirm_query($result);
 		return ($result) ? $result : false;
@@ -39,7 +39,7 @@ class DbConnect extends DatabaseObject {
 	}
 	
 	public function prevent_injection($string) {
-		$escaped_string = mysqli_real_escape_string($this->my_sql_connect, $string);
+		$escaped_string = mysqli_real_escape_string($this->my_db, $string);
 		return $escaped_string;
 	}
 	
@@ -55,17 +55,18 @@ class DbConnect extends DatabaseObject {
 	public function fetch_fields($results) {
 		return mysqli_fetch_fields($results);
 	}
+	
 	public function num_rows($result_set) {
 		return mysqli_num_rows($result_set);
 	}
 	
 	public function insert_id() {
 		// get the last id inserted over the current db connection
-		return mysqli_insert_id($this->my_sql_connect);
+		return mysqli_insert_id($this->my_db);
 	}
 	
 	public function affected_rows() {
-		return mysqli_affected_rows($this->my_sql_connect);
+		return mysqli_affected_rows($this->my_db);
 	}
 	
 	public function secure_access($items=array()) {

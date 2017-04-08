@@ -3,7 +3,7 @@
 function attempt_login($username, $password, $found_user) {
 	if ($found_user) {
 		// found user, now check password
-		if (password_check($password, $found_user->passcode)) {
+		if (password_check($password.$username, $found_user->passcode)) {
 			// password matches
 			return $found_user;
 		} else {
@@ -25,6 +25,7 @@ function password_check($password, $existing_hash) {
 		return false;
 	}
 }
+
 function new_row_foundation() {
 	?>
 <div class="row">
@@ -37,6 +38,7 @@ function full_screen_foundation($large, $medium, $small) {
 	
 	<?php 
 }
+
 
 function end_screen_foundation() {
 	?>
@@ -319,7 +321,7 @@ function navigation() {
  * 
  * - the current page array or null
  */
- function old_navigation($subject_array, $page_array, $subject, $pag_es, $visible) {
+function old_navigation($subject_array, $page_array, $subject, $pag_es, $visible) {
 	
 	$output  = "<ul class=\"subjects\">";
 	$menus = $subject->find_all_subjects($visible);
@@ -379,12 +381,12 @@ function navigation() {
 	return $output;
 }
 
-function password_encrypt($password) {
+function password_encrypt($password, $username) {
 	$hash_format = "$2y$10$";   // Tells PHP to use Blowfish with a "cost" of 10
 	$salt_length = 22; 					// Blowfish salts should be 22-characters or more
 	$salt = generate_salt($salt_length);
 	$format_and_salt = $hash_format . $salt;
-	$hash = crypt($password, $format_and_salt);
+	$hash = crypt($password.$username, $format_and_salt);
 	return $hash;
 }
 
@@ -398,11 +400,69 @@ function generate_salt($length) {
 
 	// But not '+' which is valid in base64 encoding
 	$modified_base64_string = str_replace('+', '.', $base64_string);
-
+	
 	// Truncate string to the correct length
 	$salt = substr($modified_base64_string, 0, $length);
-
+	
+	
 	return $salt;
+}
+
+function get_states() {
+	$statenames = array(
+			'AL'=>'ALABAMA',
+			'AK'=>'ALASKA',
+			'AZ'=>'ARIZONA',
+			'AR'=>'ARKANSAS',
+			'CA'=>'CALIFORNIA',
+			'CO'=>'COLORADO',
+			'CT'=>'CONNECTICUT',
+			'DE'=>'DELAWARE',
+			'FL'=>'FLORIDA',
+			'GA'=>'GEORGIA',
+			'GU'=>'GUAM GU',
+			'HI'=>'HAWAII',
+			'ID'=>'IDAHO',
+			'IL'=>'ILLINOIS',
+			'IN'=>'INDIANA',
+			'IA'=>'IOWA',
+			'KS'=>'KANSAS',
+			'KY'=>'KENTUCKY',
+			'LA'=>'LOUISIANA',
+			'ME'=>'MAINE',
+			'MD'=>'MARYLAND',
+			'MA'=>'MASSACHUSETTS',
+			'MI'=>'MICHIGAN',
+			'MN'=>'MINNESOTA',
+			'MS'=>'MISSISSIPPI',
+			'MO'=>'MISSOURI',
+			'MT'=>'MONTANA',
+			'NE'=>'NEBRASKA',
+			'NV'=>'NEVADA',
+			'NH'=>'NEW HAMPSHIRE',
+			'NJ'=>'NEW JERSEY',
+			'NM'=>'NEW MEXICO',
+			'NY'=>'NEW YORK',
+			'NC'=>'NORTH CAROLINA',
+			'ND'=>'NORTH DAKOTA',
+			'OH'=>'OHIO',
+			'OK'=>'OKLAHOMA',
+			'OR'=>'OREGON',
+			'PA'=>'PENNSYLVANIA',
+			'RI'=>'RHODE ISLAND',
+			'SC'=>'SOUTH CAROLINA',
+			'SD'=>'SOUTH DAKOTA',
+			'TN'=>'TENNESSEE',
+			'TX'=>'TEXAS',
+			'UT'=>'UTAH',
+			'VT'=>'VERMONT',
+			'VA'=>'VIRGINIA',
+			'WA'=>'WASHINGTON',
+			'WV'=>'WEST VIRGINIA',
+			'WI'=>'WISCONSIN',
+			'WY'=>'WYOMING',
+	);
+	return $statenames;
 }
 
 ?>

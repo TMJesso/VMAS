@@ -3,6 +3,12 @@
 		<br/>
 		<br/>
 		<br/>
+		<p class="text-center">
+			<a href="http://tool.motoricerca.info/robots-checker.phtml?checkreferer=1">
+			<img src="http://tool.motoricerca.info/pic/valid-robots.png" border="0"
+			alt="Valid Robots.txt" width="88" height="31"></a>
+		</p>
+		
 		<br/>
 		<div class="row">
 			<div class="large-1 medium-1 small-1 columns">

@@ -33,7 +33,7 @@ if (!$session->is_logged_in()) { redirect_to("login.php"); }
 		<ul>
 			<li>Mileage used for figuring the auto deduction must include the starting point, destination,
 			 total mileage, and business purpose for the miles driven. The odometer reading at the beginning 
-			 end of the year must also be recorded.</li>
+			 and end of the year must also be recorded.</li>
 			 <li>Meals and entertainment expenses require documentation of who attended and what business was 
 			 discussed. This includes dining out, sporting event and theater tickets, and entertaining clients 
 			 in your home.</li>

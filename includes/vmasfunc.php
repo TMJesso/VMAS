@@ -26,33 +26,6 @@ function password_check($password, $existing_hash) {
 	}
 }
 
-function new_row_foundation() {
-	?>
-<div class="row">
-<?php 
-}
-
-function full_screen_foundation($large, $medium, $small) {
-	?>
-	<div class="large-<?php echo $large; ?> medium-<?php echo $medium; ?> small-<?php echo $small;?>">
-	
-	<?php 
-}
-
-
-function end_screen_foundation() {
-	?>
-	</div>
-</div>
-<?php 
-}
-
-function end_single_foundation() {
-	?>
-	</div>
-<?php 
-}
-
 function strip_zeros_from_date( $marked_string = "") {
 	// first remove the marked zeros
 	$no_zeros = str_replace('*-', '', $marked_string);

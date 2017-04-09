@@ -17,7 +17,7 @@ $submenus = Submenu::find_submenu_by_menu_id($menu->id);
 ?>
 		<?php include_layout_template('vmas_header.php')?>
 		<div class="row">
-			<div class="large-12 medium-12 small-12 columns">
+			<div class="large-12 medium-12 columns">
 				<h1 class="text-center"><strong>V</strong>echicle <strong>M</strong>aintenance <strong>A</strong>nd <strong>S</strong>ervice<br/>Log</h1>
 				<div class="text-center">
 					DEBUG CODE:<br/>
@@ -28,7 +28,7 @@ $submenus = Submenu::find_submenu_by_menu_id($menu->id);
 
 <!-- MENU -->
 <div class="row">
-	<div class="large-12 medium-12 small-12 columns">
+	<div class="large-12 medium-12 columns">
 		<div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="large">
   			<button class="menu-icon" type="button" data-toggle></button>
 			<div class="title-bar-title">&nbsp;&nbsp;Menu</div>
@@ -110,6 +110,7 @@ $submenus = Submenu::find_submenu_by_menu_id($menu->id);
 function call_it() {
 	?>
 	<?php foreach ($submenus as $drop_menu) { ?>
+							<ul>
 								<?php $subsubmenu = Subsubmenu::get_subsubmenu($drop_menu->id, $session->find_clearance()); ?>
 									<?php if ((!$drop_menu->admin) || $admin) { // only show if the Admin user?>
 										<?php // if user clearance is 99 they have lowest clearance level and only logout will show ?>

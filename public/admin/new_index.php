@@ -1,5 +1,4 @@
-<?php
-require_once  '../../includes/path.php';
+<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/includes/path.php';
 
 $user = User::get_user_by_id(1); // this will change based on which user is logged in as of right now it is hard coded as 1
 

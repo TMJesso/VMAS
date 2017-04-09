@@ -1,5 +1,4 @@
-<?php
-require_once  '/wamp/www/vmas/includes/path.php';
+<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/includes/path.php';
  //$db->access_drop_table(false);
 
 // assume I am logged in as admin

@@ -1,4 +1,4 @@
-<?php require_once '/wamp/www/vmas/includes/path.php'; ?>
+<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/includes/path.php'; ?>
 
 <?php include_layout_template('vmas_header.php'); ?>
 <div class="row">

@@ -1,5 +1,4 @@
-<?php
-require_once  "../../includes/path.php";
+<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/includes/path.php';
 
 
 if (isset($_POST["submit"])) {

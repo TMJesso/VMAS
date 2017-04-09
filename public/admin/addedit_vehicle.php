@@ -1,5 +1,4 @@
-<?php
-require_once  '../../includes/path.php';
+<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/includes/path.php';
 if (!$session->is_logged_in()) { redirect_to("login.php"); }
 $get_car = true;
 $adding_car = false;

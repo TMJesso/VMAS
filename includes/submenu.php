@@ -75,7 +75,7 @@ class Submenu extends DatabaseObject {
 		$num = $obj->count_submenu();
 		unset($obj);
 		
-		//TODO consider changing the url for the submenus to # except for Home, Logout
+		// TODO VMAS consider changing the url for the submenus to # except for Home, Logout
 		if ($num == 0 || !$num) {
 			$obj = new self;
 			$obj->link_text = 'Home'; $obj->menu_id = 1; $obj->find_text = 'Home';	$obj->url = 'index.php'; $obj->position = 0; $obj->visible = 1;	$obj->security = 9; $obj->clearance = 0; $obj->admin = 0;

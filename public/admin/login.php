@@ -14,7 +14,7 @@ if (isset($_POST["submit"])) {
 			$founduser->confirm = 1;
 			$founduser->save();
 		}
-		//TODO make it redirect to change passcode page
+		//FIXME VMAS make it redirect to change passcode page
 		redirect_to('index.php');
 	} else {
 		$errors['Login'] = "Username and/or password combination incorrect... please try again!";

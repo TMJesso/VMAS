@@ -1,5 +1,5 @@
 <?php
-
+require_once LIB_PATH . 'org.php';
 class User EXTENDS DatabaseObject {
 	protected static $table_name = "user";
 	
@@ -40,6 +40,8 @@ class User EXTENDS DatabaseObject {
 	 * @default 9
 	 */
 	public $user_type = 9;
+	
+	public $org_id;
 	
 	/**
 	 * 
@@ -177,6 +179,8 @@ class User EXTENDS DatabaseObject {
 	}
 	
 	private function load_master_admin() {
+		$org = new Org();
+		$name = $org->get_organization_by_name("Development Team");
 		global $db;
 		$obj = new self;
 		$obj->fname = "Theral";
@@ -186,9 +190,12 @@ class User EXTENDS DatabaseObject {
 		$obj->email = "Jess_Hort_Farms@mail.com";
 		$obj->master = 1;
 		$obj->user_type = 0;
+		$obj->org_id = $name->id;
 		$obj->security = 0;
 		$obj->clearance = 0;
 		$obj->reset = 0;
+		unset($name);
+		unset($org);
 		if ($obj->save()) {
 			$codes['Master'][1] = "Master Admin has been created!";
 		} else {
@@ -198,6 +205,9 @@ class User EXTENDS DatabaseObject {
 	}
 	
 	private function load_public_user() {
+		$org = new Org();
+		$name = $org->get_organization_by_name("Development Team");
+		
 		global $db;
 		$obj = new self;
 		$obj->fname = "Public";
@@ -207,9 +217,12 @@ class User EXTENDS DatabaseObject {
 		$obj->email = "none@host.com";
 		$obj->master = 0;
 		$obj->user_type = 9;
+		$obj->org_id = $name->id;
 		$obj->security = 0;
 		$obj->clearance = 0;
 		$obj->reset = 0;
+		unset($name);
+		unset($org);
 		if ($obj->save()) {
 			$codes["Public"][1] = "Public user has been created!";
 		} else {

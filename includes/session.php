@@ -15,7 +15,7 @@ class Session {
 	
 	private $logged_in = false;
 	
-	public $user_id;
+	private $user_id;
 	
 	private $name;
 	
@@ -124,6 +124,10 @@ class Session {
 	
 	public function fullname($obj) {
 		return "{$obj->fname} {$obj->lname}";
+	}
+	
+	public function get_user_id() {
+		return $this->user_id;
 	}
 	
 	/** Session find_clearance method

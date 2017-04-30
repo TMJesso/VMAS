@@ -75,6 +75,9 @@ class DbConnect extends DatabaseObject {
 				if ($items[$x] == "drop") {
 					$this->access_drop_table(true);
 				}
+				if ($items[$x] == "org") {
+					Org::load_organization();
+				}
 				if ($items[$x] == "menu") {
 					Menu::load_menu();
 				}
@@ -97,6 +100,7 @@ class DbConnect extends DatabaseObject {
 	
 	private function create_tables($show) {
 		// thesse have to be created in this order
+		$this->create_organization($show);
 		$this->create_user($show);
 		$this->create_merchant($show);
 		$this->create_msg($show);
@@ -119,6 +123,7 @@ class DbConnect extends DatabaseObject {
 		$sql .= 'passcode varchar(72) NOT NULL, ';
 		$sql .= 'email varchar(45) NOT NULL, ';
 		$sql .= 'user_type int(1) NOT NULL, ';
+		$sql .= 'org_id int(11) NOT NULL, ';
 		$sql .= 'master tinyint(1) NOT NULL, ';
 		$sql .= 'security int(1) NOT NULL, ';
 		$sql .= 'clearance int(1) NOT NULL, ';
@@ -127,7 +132,27 @@ class DbConnect extends DatabaseObject {
 		$sql .= 'confirmed datetime NULL, ';
 		$sql .= 'PRIMARY KEY (id), ';
 		$sql .= 'UNIQUE KEY email (email), ';
-		$sql .= 'UNIQUE KEY username (username))';
+		$sql .= 'UNIQUE KEY username (username), ';
+		$sql .= 'FOREIGN KEY (org_id) REFERENCES organization (id))';
+		if ($this->query($sql)) {
+			if ($show) {
+				echo "<span style=\"color: green;\">" . substr($sql, 0, strpos($sql, "(")) . " <strong>EXECUTED</strong>!</span><br/>";
+			}
+		}
+	}
+	
+	private function create_organization($show) {
+		$sql  = 'CREATE TABLE IF NOT EXISTS organization (';
+		$sql .= 'id int(11) NOT NULL AUTO_INCREMENT, ';
+		$sql .= 'name varchar(40) NOT NULL, ';
+		$sql .= 'address varchar(30) NOT NULL, ';
+		$sql .= 'city varchar(25) NOT NULL, ';
+		$sql .= 'state varchar(2) NOT NULL, ';
+		$sql .= 'zip varchar(5) NOT NULL, ';
+		$sql .= 'phone varchar(10) NOT NULL, ';
+		$sql .= 'contact_name varchar(25) NOT NULL, ';
+		$sql .= 'PRIMARY KEY (id), ';
+		$sql .= 'UNIQUE INDEX name (name))';
 		if ($this->query($sql)) {
 			if ($show) {
 				echo "<span style=\"color: green;\">" . substr($sql, 0, strpos($sql, "(")) . " <strong>EXECUTED</strong>!</span><br/>";
@@ -410,7 +435,7 @@ class DbConnect extends DatabaseObject {
 	}
 	
 	private function drop_all_tables($show) {
-		$tables = array('subsubmenu'=>'drop', 'submenu'=>'drop', 'menu'=>'drop', 'record'=>'drop', 'vehicle'=>'drop', 'dealer'=>'drop', 'mpg'=>'drop', 'merchant'=>'drop', 'contact_info'=>'drop', 'user'=>'drop', 'user_log'=>'nodrop');
+		$tables = array('subsubmenu'=>'drop', 'submenu'=>'drop', 'menu'=>'drop', 'record'=>'drop', 'vehicle'=>'drop', 'dealer'=>'drop', 'mpg'=>'drop', 'merchant'=>'drop', 'contact_info'=>'drop', 'user'=>'drop', 'organization'=>'drop', 'user_log'=>'nodrop');
 		foreach ($tables as $table => $command) {
 			if ($command == 'drop') {
 				$sql  = strtoupper($command) . " TABLE IF EXISTS " . $table;

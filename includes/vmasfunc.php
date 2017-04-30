@@ -235,7 +235,7 @@ function breadcrumbs($menu_id=null, $submenu_id=null, $subsubmenu_id=null, $file
 
 function navigation() {
 	global $session;
-	$user = User::get_user_by_id($session->user_id);
+	$user = User::get_user_by_id($session->get_user_id());
 	$menus = Menu::find_menu_by_user_type($user->user_type);
 	$admin = $session->is_master();
 	$output = "<div class=\"top-bar\" data-responsive-toggle=\"main-menu\" data-hide-for=\"large\">";

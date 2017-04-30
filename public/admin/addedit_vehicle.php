@@ -1,4 +1,4 @@
-<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/includes/path.php';
+<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/VMAS/includes/path.php';
 if (!$session->is_logged_in()) { redirect_to("login.php"); }
 $get_car = true;
 $adding_car = false;
@@ -134,7 +134,7 @@ if (isset($_GET["vid"])) {
 <!-- CONTENT -->
 <?php if ($get_car && !$adding_car) { ?>
 	<?php // Select a car or choose blank to add ?>
-<?php $cars = Vehicle::find_all_cars_by_user_id($session->user_id); ?>
+<?php $cars = Vehicle::find_all_cars_by_user_id($session->get_user_id()); ?>
 <div class="row">
 	<div class="large-3 medium-3 columns">
 		&nbsp;

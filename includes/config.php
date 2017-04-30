@@ -5,7 +5,7 @@
 // https://wiki.filezilla-project.org/Network_Configuration
 
 // database constants
-defined('DB_SERVER')	? null : define("DB_SERVER", "127.0.0.1");
+defined('DB_SERVER')	? null : define("DB_SERVER", "localhost");
 defined('DB_USER')		? null : define("DB_USER", "afr10w");
 defined('DB_PASS')		? null : define("DB_PASS", "p6iFQRnx8B976CQv");
 defined('DB_NAME')		? null : define("DB_NAME", "vmas");

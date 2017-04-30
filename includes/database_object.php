@@ -73,7 +73,7 @@ class DatabaseObject {
 		// - single-quotes around all values
 		// - escape all values to prevent SQL injection
 		$attributes = $this->sanitized_attributes();
-		$sql = "INSERT INTO ". static::$table_name." (";
+		$sql = "INSERT IGNORE INTO ". static::$table_name." (";
 		$sql .= join(", ", array_keys($attributes));
 		$sql .= ") VALUES ('";
 		$sql .= join("', '", array_values($attributes));
@@ -97,7 +97,7 @@ class DatabaseObject {
 		foreach($attributes as $key => $value) {
 			$attribute_pairs[] = "{$key}='{$value}'";
 		}
-		$sql = "UPDATE ". static::$table_name." SET ";
+		$sql = "UPDATE IGNORE ". static::$table_name." SET ";
 		$sql .= join(", ", $attribute_pairs);
 		$sql .= " WHERE id = ". $db->prevent_injection($this->id);
 		$db->query($sql);

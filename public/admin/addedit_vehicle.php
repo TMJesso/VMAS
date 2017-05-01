@@ -1,5 +1,5 @@
 <?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/VMAS/includes/path.php';
-if (!$session->is_logged_in()) { redirect_to("login.php"); }
+if (!$session->is_logged_in("Admin")) { redirect_to("login.php"); }
 $get_car = true;
 $adding_car = false;
 

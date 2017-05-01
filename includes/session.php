@@ -81,6 +81,10 @@ class Session {
 	
 	public $errors;
 	
+	private $activity_timeout = 3600;
+	
+	private $last_activity;
+	
 	/**
 	 * Session start
 	 * 
@@ -111,15 +115,34 @@ class Session {
 	 * 
 	 * @return boolean
 	 */
-	public function is_logged_in() {
-// 		if (isset($this->user_id)) {
-// 				if ($this->logged_in) {
-// 					$this->message("You have been logged out!");
-// 				}
-// 				$this->logout();
-// 		}
+	public function is_logged_in($name) {
+		$security = get_security_by_name($name);
+		if ($security != $this->security && $this->logged_in) {
+			if ($this->logged_in) {
+				if ($this->check_idleness()) {
+					$this->message("You have been logged out!");
+				} else {
+					$this->message("You have been logged out for 60 minutes of inactivity!");
+					redirect_to("login.php");
+				}
+			}
+			$this->logout();
+		}
 		get_breadcrumb();
 		return $this->logged_in;
+	}
+	
+	private function check_idleness() {
+		if (isset($this->last_activity)) {
+			if (time() - $this->last_activity > $this->activity_timeout) {
+				return false;
+			} else {
+				$_SESSION['last_activity'] = time();
+			}
+		} else {
+			$_SESSION['last_activity'] = time();
+		}
+		return true;
 	}
 	
 	public function fullname($obj) {
@@ -220,6 +243,7 @@ class Session {
 			$this->name = $_SESSION['name'] = $this->fullname($user);
 			$this->security = $_SESSION['security'] = (int) $user->security;
 			$this->clearance = $_SESSION['clearance'] = (int)$user->clearance;
+			$this->last_activity = $_SESSION['last_activity'] = time();
 			if(isset($user->master)) {
 				$_SESSION['admin'] = $user->master;
 				$this->admin = ($_SESSION['admin']  == 1) ? true : false;
@@ -227,9 +251,9 @@ class Session {
 				$this->admin = $_SESSION['admin'] = false;
 			}
 			$activity  = ($this->admin) ? "" : "User ID: " . $this->user_id . " ";
-			$activity .= ($this->admin) ? "" : $this->convert_clerance_to_string($sheblon) . " ";
+			$activity .= ($this->admin) ? "" : $this->convert_clerance_to_string($user->security) . " ";
 			$activity  .= ($this->admin) ? "Admin Master Login" : "User Login";
-			Activity::user_log($user->id, $activity, $this->convert_clerance_to_string($sheblon));
+			Activity::user_log($user->id, $activity, $this->convert_clerance_to_string($user->security));
 			$this->logged_in = true;
 		} else {
 			$this->logged_in = false;
@@ -261,6 +285,8 @@ class Session {
 		unset($this->clearance);
 		unset($this->logged_in);
 		unset($_SESSION['admin']);
+		unset($this->last_activity);
+		unset($_SESSION['last_activity']);
 		$this->admin = false;
 		$this->logged_in = false;
 		$this->clearance = 9;

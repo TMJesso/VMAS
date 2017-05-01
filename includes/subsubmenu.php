@@ -154,7 +154,7 @@ class Subsubmenu extends DatabaseObject {
 			unset($obj);
 				
 			$obj = new self;
-			$obj->submenu_id = 7; $obj->link_text = "Reset User Passcode"; 		$obj->find_text = "ResetPasscode"; 	$obj->url = "Reset_passcode"; 			$obj->position = 1; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
+			$obj->submenu_id = 7; $obj->link_text = "Reset User Passcode"; 		$obj->find_text = "ResetPasscode"; 	$obj->url = "change_passcode.php"; 			$obj->position = 1; $obj->visible = 1; $obj->security = 0; $obj->clearance = 0; $obj->admin = 0;
 			$save[$obj->link_text] = $obj->save();
 // 			$submenu = Submenu::find_submenu_by_id($obj->submenu_id);
 // 			$obj->url .= "?m={$submenu->menu_id}&s={$obj->submenu_id}&u={$obj->id}";

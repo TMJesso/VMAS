@@ -1,4 +1,5 @@
-<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/VMAS/includes/path.php';
+<?php 
+require_once  $_SERVER['DOCUMENT_ROOT'] . '/VMAS/includes/path.php';
 
 
 if (isset($_POST["submit"])) {
@@ -15,6 +16,10 @@ if (isset($_POST["submit"])) {
 			$founduser->save();
 		}
 		//FIXME VMAS make it redirect to change passcode page
+		if ($founduser->reset) {
+			$session->message("You must change your passcode!");
+			redirect_to('change_passcode.php');
+		}
 		redirect_to('index.php');
 	} else {
 		$errors['Login'] = "Username and/or password combination incorrect... please try again!";
@@ -26,22 +31,22 @@ if (isset($_POST["submit"])) {
 
 <?php include_layout_template('vmas_header.php'); ?>
 <div class="row">
-	<div class="large-3 medium-3 small-2 columns">
+	<div class="large-3 medium-3 columns">
 		&nbsp;
 	</div>
-	<div class="large-6 medium-6 small-8 columns">
+	<div class="large-6 medium-6 columns">
 		<?php echo output_errors($session->errors); ?>
 		<?php echo output_message($session->message); ?>
 	</div>
-	<div class="large-3 medium-3 small-2 columns">
+	<div class="large-3 medium-3 columns">
 		&nbsp;
 	</div>
 </div>
 <div class="row">
-	<div class="large-3 medium-3 small-2 columns">
+	<div class="large-3 medium-3 columns">
 		&nbsp;
 	</div>
-	<div class="large-6 medium-6 small-8 columns">
+	<div class="large-6 medium-6 columns">
 		<form data-abide novalidate method="post" action="login.php">
 			<div data-abide-error class="alert callout" style="display: none;">
 				<p><i class="fi-alert"></i> There are some errors in your form.</p>
@@ -72,7 +77,7 @@ if (isset($_POST["submit"])) {
 		<br/>
 		<br/>
 	</div>
-	<div class="large-3 medium-3 small-2 columns">
+	<div class="large-3 medium-3 columns">
 		&nbsp;
 	</div>
 </div>

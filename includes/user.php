@@ -45,7 +45,7 @@ class User EXTENDS DatabaseObject {
 	
 	/**
 	 * 
-	 * @var tinyint size 1
+	 * @var boolean size 1
 	 * @default 0
 	 */
 	public $master = 0;
@@ -109,14 +109,14 @@ class User EXTENDS DatabaseObject {
 	 * 
 	 * true or false
 	 * 
-	 * @var tinyint size 1
+	 * @var boolean size 1
 	 */
 	public $reset = 0;
 	
 	/** 
 	 * true or false
 	 * 
-	 * @var tinyint size 1
+	 * @var boolean size 1
 	 */
 	public $confirm = 0;
 	
